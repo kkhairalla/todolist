@@ -1,6 +1,6 @@
 export interface ITask {
   taskName: string;
-  deadline: number;
+  priority: number;
 }
 
 export {};

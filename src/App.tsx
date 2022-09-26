@@ -5,20 +5,20 @@ import { ITask } from './Interfaces';
 
 const App: FC = () => {
   const [task, setTask] = useState<string>('');
-  const [deadline, setDeadline] = useState<number>(0);
+  const [priority, setPriority] = useState<number>(0);
   const [todoList, setTodoList] = useState<ITask[]>([]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
     event.target.name === 'task'
       ? setTask(event.target.value)
-      : setDeadline(Number(event.target.value));
+      : setPriority(Number(event.target.value));
   };
 
   const addTask = (): void => {
-    const newTask: ITask = { taskName: task, deadline: deadline };
+    const newTask: ITask = { taskName: task, priority: priority };
     setTodoList([...todoList, newTask]);
     setTask('');
-    setDeadline(0);
+    setPriority(0);
   };
 
   const completeTask = (taskNameToDelete: string): void => {
@@ -29,7 +29,22 @@ const App: FC = () => {
     );
   };
 
-  const saveToFile = () => {};
+  const saveToFile = () => {
+    if (todoList.length > 0) {
+      const jsonse = JSON.stringify(todoList);
+      const blob = new Blob([jsonse], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'todos.json';
+      a.style.visibility = 'hidden';
+      a.id = 'persistLink';
+
+      document.body.appendChild(a);
+      document.getElementById('persistLink')?.click();
+    }
+  };
 
   return (
     <div className="App">
@@ -47,9 +62,8 @@ const App: FC = () => {
           />
           <input
             type="number"
-            placeholder="Deadline in hours"
-            name="deadline"
-            value={deadline}
+            name="priority"
+            value={priority}
             onChange={handleChange}
           />
         </div>
