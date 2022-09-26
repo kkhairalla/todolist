@@ -4,20 +4,20 @@ import TodoTask from './Components/TodoTask';
 import { ITask } from './Interfaces';
 
 const App: FC = () => {
-  const [task, setTask] = useState<string>('');
+  const [taskName, setTaskName] = useState<string>('');
   const [priority, setPriority] = useState<number>(0);
   const [todoList, setTodoList] = useState<ITask[]>([]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
     event.target.name === 'task'
-      ? setTask(event.target.value)
+      ? setTaskName(event.target.value)
       : setPriority(Number(event.target.value));
   };
 
   const addTask = (): void => {
-    const newTask: ITask = { taskName: task, priority: priority };
+    const newTask: ITask = { taskName: taskName, priority: priority };
     setTodoList([...todoList, newTask]);
-    setTask('');
+    setTaskName('');
     setPriority(0);
   };
 
@@ -49,7 +49,11 @@ const App: FC = () => {
   return (
     <div className="App">
       <div className="header">
-        <button className="persistButton" onClick={saveToFile}>
+        <button
+          disabled={todoList.length < 1}
+          className="persistButton"
+          onClick={saveToFile}
+        >
           Persist Data
         </button>
         <div className="inputContainer">
@@ -58,7 +62,7 @@ const App: FC = () => {
             placeholder="Task..."
             name="task"
             onChange={handleChange}
-            value={task}
+            value={taskName}
           />
           <input
             type="number"
