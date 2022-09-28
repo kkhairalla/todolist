@@ -1,12 +1,12 @@
 import React from 'react';
-import { ITask } from '../Interfaces';
+import { Task } from '../interfaces';
 
-interface Props {
-  task: ITask;
-  completeTask(taskNameToDelete: string): void;
+interface TodoTaskProps {
+  task: Task;
+  onCompleteTask(taskNameToDelete: string): void;
 }
 
-const TodoTask = ({ task, completeTask }: Props) => {
+const TodoTask = ({ task, onCompleteTask }: TodoTaskProps) => {
   return (
     <div className="task">
       <div className="content">
@@ -15,7 +15,7 @@ const TodoTask = ({ task, completeTask }: Props) => {
       </div>
       <button
         onClick={() => {
-          completeTask(task.taskName);
+          onCompleteTask(task.taskName);
         }}
       >
         x
