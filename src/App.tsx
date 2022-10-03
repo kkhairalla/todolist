@@ -3,6 +3,7 @@ import './App.css';
 import TodoTask from './Components/TodoTask';
 import { Task } from './interfaces';
 import styled from 'styled-components';
+import initialList from './import/todos.json';
 
 const AppContainer = styled.div`
   display: flex;
@@ -67,7 +68,7 @@ const TodoList = styled.div`
 const App = () => {
   const [taskName, setTaskName] = useState('');
   const [priority, setPriority] = useState(0);
-  const [todoList, setTodoList] = useState<Task[]>([]);
+  const [todoList, setTodoList] = useState<Task[]>(initialList);
 
   const handleTaskChange = (event: ChangeEvent<HTMLInputElement>) => {
     setTaskName(event.target.value);
