@@ -1,7 +1,7 @@
 import React, { useState, ChangeEvent } from 'react';
 import './App.css';
 import TodoTask from './Components/TodoTask';
-import { Task } from './interfaces';
+import type { Task } from './interfaces';
 import styled from 'styled-components';
 import initialList from './import/todos.json';
 

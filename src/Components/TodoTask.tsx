@@ -1,5 +1,5 @@
 import React from 'react';
-import { Task } from '../interfaces';
+import type { Task } from '../interfaces';
 import styled from 'styled-components';
 
 const colors = {
