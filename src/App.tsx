@@ -2,6 +2,67 @@ import React, { useState, ChangeEvent } from 'react';
 import './App.css';
 import TodoTask from './Components/TodoTask';
 import { Task } from './interfaces';
+import styled from 'styled-components';
+
+const AppContainer = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
+`;
+
+const Header = styled.form`
+  flex: 25%;
+  background-color: gray;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const PersistButton = styled.button`
+  border-bottom-left-radius: 8px;
+  border-top-left-radius: 8px;
+  width: 70px;
+  height: 84px;
+  border: none;
+  padding-left: 10px;
+  cursor: pointer;
+`;
+
+const InputContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Input = styled.input`
+  width: 200px;
+  height: 40px;
+  border: none;
+  padding-left: 10px;
+`;
+
+const SubmitButton = styled.button`
+  width: 70px;
+  height: 84px;
+  border: none;
+  border-bottom-right-radius: 8px;
+  border-top-right-radius: 8px;
+  padding-left: 10px;
+  cursor: pointer;
+`;
+
+const TodoList = styled.div`
+  flex: 75%;
+  width: 100%;
+  background-color: #d3d3d3;
+  display: flex;
+  align-items: center;
+  padding-top: 50px;
+  flex-direction: column;
+`;
 
 const App = () => {
   const [taskName, setTaskName] = useState('');
@@ -28,8 +89,7 @@ const App = () => {
     setPriority(0);
   };
 
-  // hanler draus
-  const completeTask = (taskNameToDelete: string): void => {
+  const handleCompleteTask = (taskNameToDelete: string): void => {
     setTodoList(
       todoList.filter((task) => {
         return task.taskName !== taskNameToDelete;
@@ -53,49 +113,52 @@ const App = () => {
 
       const link = document.getElementById('persistLink');
       link?.click();
-      // timeout: incl. revoke URL
-      link?.remove();
+      window.setTimeout(() => {
+        URL.revokeObjectURL(url);
+        link?.remove();
+      }, 1000);
     }
   };
 
   return (
-    <div className="App">
-      <form onSubmit={handleFormSubmit}>
-        <div className="header">
-          <button
-            type="button"
-            disabled={todoList.length < 1}
-            className="persistButton"
-            onClick={saveToFile}
-          >
-            Persist Data
-          </button>
-          <div className="inputContainer">
-            <input
-              type="text"
-              placeholder="Task..."
-              name="task"
-              onChange={handleTaskChange}
-              value={taskName}
-            />
-            <input
-              type="number"
-              name="priority"
-              value={priority}
-              onChange={handlePriorityChange}
-            />
-          </div>
-          <button type="submit">Add Task</button>
-        </div>
-      </form>
-      <div className="todoList">
+    <AppContainer>
+      <Header onSubmit={handleFormSubmit}>
+        <PersistButton
+          type="button"
+          disabled={todoList.length < 1}
+          onClick={saveToFile}
+        >
+          Persist Data
+        </PersistButton>
+        <InputContainer>
+          <Input
+            type="text"
+            placeholder="Task..."
+            name="task"
+            onChange={handleTaskChange}
+            value={taskName}
+          />
+          <Input
+            type="number"
+            name="priority"
+            value={priority}
+            onChange={handlePriorityChange}
+          />
+        </InputContainer>
+        <SubmitButton type="submit">Add Task</SubmitButton>
+      </Header>
+      <TodoList>
         {todoList.map((task: Task, key: number) => {
           return (
-            <TodoTask key={key} task={task} onCompleteTask={completeTask} />
+            <TodoTask
+              key={key}
+              task={task}
+              onCompleteTask={handleCompleteTask}
+            />
           );
         })}
-      </div>
-    </div>
+      </TodoList>
+    </AppContainer>
   );
 };
 
