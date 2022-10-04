@@ -1,9 +1,15 @@
 import React, { useState, ChangeEvent } from 'react';
-import './App.css';
 import TodoTask from './Components/TodoTask';
 import type { Task } from './interfaces';
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 import initialList from './import/todos.json';
+
+export const RootGlobalStyle = createGlobalStyle`
+  body {
+    margin: 0;
+    padding: 0;
+  }
+`;
 
 const AppContainer = styled.div`
   display: flex;
@@ -23,14 +29,22 @@ const Header = styled.form`
   align-items: center;
 `;
 
-const PersistButton = styled.button`
-  border-bottom-left-radius: 8px;
-  border-top-left-radius: 8px;
+const Button = styled.button`
   width: 70px;
   height: 84px;
   border: none;
   padding-left: 10px;
   cursor: pointer;
+`;
+
+const PersistButton = styled(Button)`
+  border-bottom-left-radius: 8px;
+  border-top-left-radius: 8px;
+`;
+
+const SubmitButton = styled(Button)`
+  border-bottom-right-radius: 8px;
+  border-top-right-radius: 8px;
 `;
 
 const InputContainer = styled.div`
@@ -43,16 +57,6 @@ const Input = styled.input`
   height: 40px;
   border: none;
   padding-left: 10px;
-`;
-
-const SubmitButton = styled.button`
-  width: 70px;
-  height: 84px;
-  border: none;
-  border-bottom-right-radius: 8px;
-  border-top-right-radius: 8px;
-  padding-left: 10px;
-  cursor: pointer;
 `;
 
 const TodoList = styled.div`
@@ -123,6 +127,7 @@ const App = () => {
 
   return (
     <AppContainer>
+      <RootGlobalStyle />
       <Header onSubmit={handleFormSubmit}>
         <PersistButton
           type="button"
